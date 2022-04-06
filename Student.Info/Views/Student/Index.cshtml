@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Student>
+
+@{
+    ViewData["Title"] = "Student Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZipCode)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolCode)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.StudentId)*@
+                    <input type="button" value="@item.StudentId" onclick="OnStudentIDClicked(@item.StudentId)" style="border:none" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    <table class="table table-bordered table-responsive table-hover" id="tblContacts" style="visibility:visible">
+        <tr>
+            <th>Student Id </th>
+            <th>First Name </th>
+            <th>Last Name </th>
+            <th>Relationship</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Address </th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip Code</th>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    function OnStudentIDClicked(studentID) {
+        //alert(studentID);
+
+        $.get('/Student/GetContacts?studentID=' + studentID, {}, function (data) {
+            var tblEmployee = $("#tblContacts");
+            $.each(data, function (index, item) {
+                //alert(item.EmailAddress);
+                var tr = $("<tr></tr>");
+                tr.html(("<td>" + item.StudentId + "</td>")
+                    + " " + ("<td>" + item.FirstName + "</td>")
+                    + " " + ("<td>" + item.LastName + "</td>")
+                    + " " + ("<td>" + item.Relationship + "</td>")
+                    + " " + ("<td>" + item.EmailAddress + "</td>")
+                    + " " + ("<td>" + item.Mobile + "</td>")
+                    + " " + ("<td>" + item.Address + "</td>")
+                    + " " + ("<td>" + item.City + "</td>")
+                    + " " + ("<td>" + item.State + "</td>")
+                    + " " + ("<td>" + item.ZipCode + "</td>"));
+                tblEmployee.append(tr);
+            });
+        });
+    }
+</script>
+
